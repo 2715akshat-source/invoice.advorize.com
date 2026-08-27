@@ -183,7 +183,7 @@ export default function Home() {
 
       {/* --------------------------------------------------------- links */}
       <section className="shell py-20 md:py-24">
-        <div className="grid gap-6 md:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {[
             {
               title: "GST invoice format",
@@ -195,6 +195,12 @@ export default function Home() {
               title: "What to put on an invoice",
               body: "The practical version: what makes an invoice get paid quickly, and the four omissions that hold one up.",
               href: "/how-to-make-an-invoice",
+              external: false,
+            },
+            {
+              title: "Invoicing, in practice",
+              body: "Getting paid faster, invoicing overseas clients, asking for advances — the part that is not the document.",
+              href: "/blog",
               external: false,
             },
             {

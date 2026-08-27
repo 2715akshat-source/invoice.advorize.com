@@ -13,6 +13,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { lenisRef } from "@/lib/lenis";
 import Wordmark from "./Wordmark";
 import { guideBySlug } from "@/content/guides";
+import { postBySlug } from "@/content/posts";
 
 const NavContext = createContext<(href: string) => void>(() => {});
 export const useTransitionNav = () => useContext(NavContext);
@@ -22,7 +23,10 @@ const BRAND_COVER_MS = 1150;
 const PANELS = 5;
 
 /** What the curtain says on the way to each route. */
-const LABELS: Record<string, string> = { "/guides": "Guides" };
+const LABELS: Record<string, string> = {
+  "/guides": "Formats",
+  "/blog": "Guides",
+};
 
 /**
  * The wordmark arriving on the curtain: it blooms out of a blur, wipes in
@@ -134,7 +138,10 @@ export default function TransitionProvider({
       /* Guides name themselves on the curtain; everything else is the tool. */
       const path = href.split("#")[0];
       setLabel(
-        LABELS[path] ?? guideBySlug(path.replace(/^\//, ""))?.h1 ?? "Invoice Generator",
+        LABELS[path] ??
+          guideBySlug(path.replace(/^\//, ""))?.h1 ??
+          postBySlug(path.replace(/^\/blog\//, ""))?.h1 ??
+          "Invoice Generator",
       );
       setPending(href);
     },

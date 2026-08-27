@@ -11,7 +11,8 @@ import { PARENT_URL, PDF_URL } from "@/lib/seo";
 const LINKS = [
   { label: "Generator", href: "/#builder" },
   { label: "How it works", href: "/#how" },
-  { label: "Guides", href: "/guides" },
+  { label: "Formats", href: "/guides" },
+  { label: "Guides", href: "/blog" },
   { label: "PDF tools", href: PDF_URL },
 ];
 

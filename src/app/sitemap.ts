@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { guides } from "@/content/guides";
+import { posts } from "@/content/posts";
 import { absolute } from "@/lib/seo";
 
 /**
@@ -35,6 +36,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly" as const,
       priority: 0.8,
     },
+    {
+      url: absolute("/blog"),
+      lastModified: BUILT,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    },
+    ...posts.map((post) => ({
+      url: absolute(`/blog/${post.slug}`),
+      lastModified: new Date(post.updated),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    })),
     ...guides.map((guide) => ({
       url: absolute(`/${guide.slug}`),
       lastModified: new Date(guide.updated),

@@ -156,6 +156,63 @@ export const itemListSchema = ({
   })),
 });
 
+/**
+ * A blog post.
+ *
+ * `speakable` marks the two elements worth reading aloud — the headline and
+ * the answer-first paragraph. It is a small signal, but it points an answer
+ * engine at the part of the page written to stand on its own, which is the
+ * part we want quoted.
+ */
+export const blogPostingSchema = ({
+  path,
+  headline,
+  description,
+  published,
+  updated,
+  keywords,
+  answer,
+}: {
+  path: string;
+  headline: string;
+  description: string;
+  published: string;
+  updated: string;
+  keywords: string[];
+  answer: string;
+}) => ({
+  "@type": "BlogPosting",
+  "@id": `${absolute(path)}#post`,
+  headline,
+  description,
+  /* the direct answer, so it travels with the markup rather than only
+     existing in the rendered HTML */
+  abstract: answer,
+  url: absolute(path),
+  datePublished: published,
+  dateModified: updated,
+  keywords: keywords.join(", "),
+  inLanguage: "en-IN",
+  author: { "@id": `${PARENT_URL}/#organization` },
+  publisher: { "@id": `${PARENT_URL}/#organization` },
+  mainEntityOfPage: { "@id": `${absolute(path)}#webpage` },
+  isPartOf: { "@id": `${SITE_URL}/#blog` },
+  speakable: {
+    "@type": "SpeakableSpecification",
+    cssSelector: ["h1", "[data-answer]"],
+  },
+});
+
+/** The blog itself, so its posts have something to belong to. */
+export const blogSchema = () => ({
+  "@type": "Blog",
+  "@id": `${SITE_URL}/#blog`,
+  url: absolute("/blog"),
+  name: "Advorize Invoice Generator — Guides",
+  inLanguage: "en-IN",
+  publisher: { "@id": `${PARENT_URL}/#organization` },
+});
+
 export const breadcrumbSchema = (trail: { name: string; path: string }[]) => ({
   "@type": "BreadcrumbList",
   itemListElement: trail.map((t, i) => ({
