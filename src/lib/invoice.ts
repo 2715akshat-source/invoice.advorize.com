@@ -189,13 +189,26 @@ export function nextNumber(number: string): string {
 
 /* ------------------------------------------------------------ defaults */
 
-export function blankInvoice(): Invoice {
+/**
+ * The initial state, containing nothing that comes from the clock.
+ *
+ * This matters more than it looks. The home page is statically generated, so
+ * its HTML is built once at deploy time — if the first render read the date,
+ * the deploy date would be baked into the page and every visitor would be
+ * handed an invoice dated whenever we last shipped. React would also flag the
+ * hydration mismatch, because the server said one date and the browser says
+ * another.
+ *
+ * So the first render is deterministic and dateless, and `freshInvoice()`
+ * fills in the real dates once we are running in the browser.
+ */
+export function seedInvoice(): Invoice {
   return {
     version: 1,
     docType: "invoice",
-    number: suggestNumber("invoice"),
-    issueDate: today(),
-    dueDate: addDays(today(), 15),
+    number: "",
+    issueDate: "",
+    dueDate: "",
     reference: "",
     currencyCode: "INR",
     from: emptyParty(),
@@ -226,11 +239,24 @@ export function blankInvoice(): Invoice {
 }
 
 /**
+ * A new invoice, dated today and numbered from today. Only ever called in the
+ * browser — see `seedInvoice` for why.
+ */
+export function freshInvoice(): Invoice {
+  return {
+    ...seedInvoice(),
+    number: suggestNumber("invoice"),
+    issueDate: today(),
+    dueDate: addDays(today(), 15),
+  };
+}
+
+/**
  * A worked example, so the preview is never an empty rectangle and someone
  * can see the shape of a finished invoice before typing anything.
  */
 export function sampleInvoice(): Invoice {
-  const base = blankInvoice();
+  const base = freshInvoice();
   return {
     ...base,
     from: {
@@ -468,7 +494,7 @@ export function clearDraft() {
  * the parsed shape.
  */
 export function migrate(raw: unknown): Invoice {
-  const base = blankInvoice();
+  const base = freshInvoice();
   if (!raw || typeof raw !== "object") return base;
   const saved = raw as Partial<Invoice>;
 

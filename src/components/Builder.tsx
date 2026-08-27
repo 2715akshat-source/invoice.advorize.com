@@ -7,7 +7,6 @@ import ItemsEditor from "./ItemsEditor";
 import { ScaledSheet } from "./InvoiceSheet";
 import ImageField from "./ImageField";
 import {
-  blankInvoice,
   clearDraft,
   emptyItem,
   computeTotals,
@@ -16,7 +15,9 @@ import {
   loadDraft,
   nextNumber,
   saveDraft,
+  freshInvoice,
   sampleInvoice,
+  seedInvoice,
   suggestNumber,
   today,
   addDays,
@@ -41,9 +42,10 @@ const GST_RATES = [0, 5, 12, 18, 28];
 type Pane = "edit" | "preview";
 
 export default function Builder() {
-  const [invoice, setInvoice] = useState<Invoice>(blankInvoice);
-  /* Nothing renders from the draft until the client has read it, or the
-     server HTML and the first client render disagree. */
+  /* Seeded without a date, then filled in on mount — the home page is
+     statically generated, so anything read from the clock here would be
+     frozen at deploy time. See seedInvoice(). */
+  const [invoice, setInvoice] = useState<Invoice>(seedInvoice);
   const [hydrated, setHydrated] = useState(false);
   const [pane, setPane] = useState<Pane>("edit");
   const [busy, setBusy] = useState(false);
@@ -72,8 +74,7 @@ export default function Builder() {
   );
 
   useEffect(() => {
-    const draft = loadDraft();
-    if (draft) setInvoice(draft);
+    setInvoice(loadDraft() ?? freshInvoice());
     setHydrated(true);
   }, []);
 
@@ -141,7 +142,7 @@ export default function Builder() {
     if (!confirm("Clear this invoice and start again? This cannot be undone."))
       return;
     clearDraft();
-    setInvoice(blankInvoice());
+    setInvoice(freshInvoice());
   }
 
   /** Same client and settings, next number, dates moved to today. */
