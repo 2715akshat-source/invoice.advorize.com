@@ -194,7 +194,7 @@ export default function Home() {
             {
               title: "What to put on an invoice",
               body: "The practical version: what makes an invoice get paid quickly, and the four omissions that hold one up.",
-              href: "/guide",
+              href: "/how-to-make-an-invoice",
               external: false,
             },
             {

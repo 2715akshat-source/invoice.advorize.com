@@ -16,8 +16,21 @@ const COLUMNS = [
   {
     heading: "Guides",
     links: [
+      { label: "All guides", href: "/guides" },
       { label: "GST invoice format", href: "/gst-invoice-format" },
-      { label: "What to put on an invoice", href: "/guide" },
+      { label: "Invoice format in India", href: "/invoice-format-india" },
+      { label: "What to put on an invoice", href: "/how-to-make-an-invoice" },
+      { label: "Invoice number format", href: "/invoice-number-format" },
+    ],
+  },
+  {
+    heading: "Documents",
+    links: [
+      { label: "Proforma invoice", href: "/proforma-invoice-format" },
+      { label: "Quotation format", href: "/quotation-format" },
+      { label: "Payment receipt", href: "/payment-receipt-format" },
+      { label: "Credit & debit note", href: "/credit-note-and-debit-note-format" },
+      { label: "Export invoice", href: "/export-invoice-format" },
     ],
   },
   {
@@ -70,7 +83,7 @@ export default function Footer() {
         </Magnetic>
       </div>
 
-      <div className="mt-24 grid gap-10 border-t border-line pt-10 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-24 grid gap-10 border-t border-line pt-10 sm:grid-cols-2 lg:grid-cols-5">
         {COLUMNS.map((column) => (
           <div key={column.heading}>
             <div className="font-medium">{column.heading}</div>

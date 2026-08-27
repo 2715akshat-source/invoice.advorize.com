@@ -29,8 +29,16 @@ const nextConfig: NextConfig = {
       { source: "/invoice-generator", destination: "/", permanent: true },
       { source: "/free-invoice-generator", destination: "/", permanent: true },
       { source: "/gst-invoice", destination: "/gst-invoice-format", permanent: true },
-      { source: "/invoice-format", destination: "/gst-invoice-format", permanent: true },
-      { source: "/how-to-make-an-invoice", destination: "/guide", permanent: true },
+      { source: "/gst-bill-format", destination: "/gst-invoice-format", permanent: true },
+      { source: "/invoice-format", destination: "/invoice-format-india", permanent: true },
+      { source: "/bill-format", destination: "/invoice-format-india", permanent: true },
+      { source: "/guide", destination: "/how-to-make-an-invoice", permanent: true },
+      { source: "/proforma-invoice", destination: "/proforma-invoice-format", permanent: true },
+      { source: "/quotation", destination: "/quotation-format", permanent: true },
+      { source: "/receipt-format", destination: "/payment-receipt-format", permanent: true },
+      { source: "/credit-note", destination: "/credit-note-and-debit-note-format", permanent: true },
+      { source: "/e-invoice", destination: "/e-invoice-india", permanent: true },
+      { source: "/bill-of-supply", destination: "/tax-invoice-vs-bill-of-supply", permanent: true },
     ];
   },
 };

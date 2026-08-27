@@ -98,6 +98,64 @@ export const pageSchema = ({
   about: { "@id": `${PARENT_URL}/#organization` },
 });
 
+/**
+ * A written guide.
+ *
+ * `Article` rather than `TechArticle` — these are explainers for people
+ * running a business, not developer documentation, and the type a search
+ * engine understands most reliably is the honest one. `dateModified` is the
+ * field that actually earns anything here: it is what marks a page about
+ * rules that change as current rather than stale.
+ */
+export const articleSchema = ({
+  path,
+  headline,
+  description,
+  updated,
+  keywords,
+}: {
+  path: string;
+  headline: string;
+  description: string;
+  updated: string;
+  keywords: string[];
+}) => ({
+  "@type": "Article",
+  "@id": `${absolute(path)}#article`,
+  headline,
+  description,
+  inLanguage: "en-IN",
+  datePublished: updated,
+  dateModified: updated,
+  keywords: keywords.join(", "),
+  mainEntityOfPage: { "@id": `${absolute(path)}#webpage` },
+  author: { "@id": `${PARENT_URL}/#organization` },
+  publisher: { "@id": `${PARENT_URL}/#organization` },
+  isPartOf: { "@id": `${SITE_URL}/#website` },
+});
+
+/** The guide index — one node listing every guide, in order. */
+export const itemListSchema = ({
+  path,
+  name,
+  items,
+}: {
+  path: string;
+  name: string;
+  items: { name: string; path: string }[];
+}) => ({
+  "@type": "ItemList",
+  "@id": `${absolute(path)}#list`,
+  name,
+  numberOfItems: items.length,
+  itemListElement: items.map((item, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: item.name,
+    url: absolute(item.path),
+  })),
+});
+
 export const breadcrumbSchema = (trail: { name: string; path: string }[]) => ({
   "@type": "BreadcrumbList",
   itemListElement: trail.map((t, i) => ({
